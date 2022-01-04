@@ -1,11 +1,11 @@
 [package]
 name = "hotel"
-version = "0.1.0"
+version = "0.1.1"
 edition = "2021"
 authors = ["Nils Martel"]
 categories = ["data-structures", "caching"]
 description = "Collection Data-structure to associate values with keys"
-license = "GPL-3.0"
+license = "MIT"
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
