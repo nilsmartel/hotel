@@ -36,6 +36,7 @@ mod tests {
     }
 }
 
+/// collection to associate data with unique keys.
 #[derive(Default)]
 pub struct Hotel<T> {
     floor: Vec<Option<T>>,
