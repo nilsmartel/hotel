@@ -1,4 +1,4 @@
-# hotel
+# Hotel
 
 Simple collection datastructure to associate data with unique keys.
 
