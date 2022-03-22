@@ -74,11 +74,7 @@ impl<T> Hotel<T> {
         }
     }
 
-    pub fn into_iter(self) -> impl Iterator<Item = T> {
-        self.floor.into_iter().filter_map(|v| v)
-    }
-
-    pub fn iter(&self) -> impl Iterator<Item = &T> {
+    pub fn values(&self) -> impl Iterator<Item = &T> {
         self.floor.iter().filter_map(|v| v.as_ref())
     }
 
