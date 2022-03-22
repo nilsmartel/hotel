@@ -1,3 +1,5 @@
+use std::collections::btree_map::Iter;
+
 #[cfg(test)]
 mod tests {
     use super::Hotel;
@@ -42,6 +44,20 @@ pub struct Hotel<T> {
     floor: Vec<Option<T>>,
     /// List of available slots on the floor
     holes: Vec<usize>,
+}
+
+impl<T> IntoIterator for Hotel<T> {
+    type Item = (usize, T);
+
+    type IntoIter = HotelIter<T>;
+
+    fn into_iter(self) -> Self::IntoIter {
+        HotelIter {
+            floor: self.floor,
+            cursor: 0,
+        }
+    }
+
 }
 
 impl<T> Hotel<T> {
@@ -104,5 +120,32 @@ impl<T> Hotel<T> {
     /// Removes an element from the Hotel, returns Err of no Element is present
     pub fn remove(&mut self, key: usize) -> Result<T, ()> {
         self.take(key).ok_or(())
+    }
+}
+
+pub struct HotelIter<T> {
+    floor: Vec<Option<T>>,
+    cursor: usize,
+}
+
+impl<T> Iterator for HotelIter<T> {
+    type Item = (usize, T);
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let cursor = self.cursor;
+        if cursor >= self.floor.len() {
+            return None;
+        }
+        
+        self.cursor += 1;
+
+        if self.floor[cursor].is_none() {
+            return self.next();
+        }
+
+
+        let value = self.floor[cursor].take().unwrap();
+
+        Some((cursor, value))
     }
 }
