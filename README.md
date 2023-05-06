@@ -33,3 +33,10 @@ let key3 = nodes.put(Node::new(c));
 edges.push( (key1, key2) );
 edges.push( (key2, key3) );
 ```
+
+# HotelMap
+
+Additionally, this crate contains the HotelMap datastructure.
+It's a shorthand for mapping keys to simple usize values, and being able to index with both.
+This can have the advantage of being able to use copyable and small `usize`, instead of carrying around complex and large keys all the time.
+

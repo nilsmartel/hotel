@@ -1,3 +1,6 @@
+mod hotel_map;
+
+pub use hotel_map::*;
 
 #[cfg(test)]
 mod tests {
@@ -38,7 +41,7 @@ mod tests {
 }
 
 /// collection to associate data with unique keys.
-#[derive(Default)]
+#[derive(Default, Debug)]
 pub struct Hotel<T> {
     floor: Vec<Option<T>>,
     /// List of available slots on the floor
@@ -56,7 +59,6 @@ impl<T> IntoIterator for Hotel<T> {
             cursor: 0,
         }
     }
-
 }
 
 impl<T> Hotel<T> {
@@ -92,7 +94,7 @@ impl<T> Hotel<T> {
         }
     }
 
-    pub fn get(&mut self, key: usize) -> Option<&T> {
+    pub fn get(&self, key: usize) -> Option<&T> {
         if let Some(v) = self.floor.get(key).and_then(|v| v.as_ref()) {
             Some(v)
         } else {
@@ -131,13 +133,12 @@ impl<T> Iterator for HotelIter<T> {
         if cursor >= self.floor.len() {
             return None;
         }
-        
+
         self.cursor += 1;
 
         if self.floor[cursor].is_none() {
             return self.next();
         }
-
 
         let value = self.floor[cursor].take().unwrap();
 
