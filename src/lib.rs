@@ -118,6 +118,13 @@ impl<T> Hotel<T> {
     pub fn remove(&mut self, key: usize) -> Result<T, ()> {
         self.take(key).ok_or(())
     }
+
+    pub fn iter(&self) -> impl Iterator<Item = (usize, &T)> {
+        self.floor
+            .iter()
+            .enumerate()
+            .filter_map(|(id, v)| v.as_ref().map(|v| (id, v)))
+    }
 }
 
 pub struct HotelIter<T> {

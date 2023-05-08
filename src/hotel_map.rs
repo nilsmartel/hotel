@@ -88,4 +88,22 @@ where
             }
         }
     }
+
+    /// Iterates only over the values and their indices
+    pub fn iter_values(&self) -> impl Iterator<Item = (usize, &V)> {
+        self.hotel.iter()
+    }
+
+    /// Iterate over all keys, indices and values in the hotel
+    pub fn iter(&self) -> impl Iterator<Item = (&K, usize, &V)> {
+        self.map.iter().map(|(key, index)| {
+            (
+                key,
+                *index,
+                self.hotel
+                    .get(*index)
+                    .expect("keys of HotelMap to always be valid Hotel keys"),
+            )
+        })
+    }
 }
