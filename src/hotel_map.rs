@@ -26,6 +26,7 @@ where
                 write!(f, ", ")?;
             }
 
+            let v = &self.hotel.floor[*v];
             write!(f, "{k:?} => {v:?}")?;
         }
         write!(f, "]")
