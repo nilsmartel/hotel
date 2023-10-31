@@ -2,50 +2,30 @@ mod hotel_map;
 
 pub use hotel_map::*;
 
-#[cfg(test)]
-mod tests {
-    use super::Hotel;
-
-    #[test]
-    fn inserting() {
-        let collection = 0..10000;
-        let mut hotel = Hotel::new();
-        collection.for_each(|v| {
-            let key = hotel.put(v);
-            assert_eq!(key, v as usize);
-        });
-    }
-
-    /// Guarantees that order of insertion is determinisitc even after retrieval
-    #[test]
-    fn order() {
-        let collection = 0..10000;
-        let mut hotel = Hotel::new();
-        collection.for_each(|v| {
-            let key = hotel.put(v);
-            assert_eq!(key, v as usize);
-        });
-
-        hotel.take(0);
-        hotel.take(15);
-        hotel.take(32);
-        hotel.take(3189);
-        hotel.take(7777);
-
-        assert_eq!(hotel.put(0), 7777);
-        assert_eq!(hotel.put(0), 3189);
-        assert_eq!(hotel.put(0), 32);
-        assert_eq!(hotel.put(0), 15);
-        assert_eq!(hotel.put(0), 0);
-    }
-}
-
 /// collection to associate data with unique keys.
-#[derive(Default, Debug)]
+#[derive(Default)]
 pub struct Hotel<T> {
     floor: Vec<Option<T>>,
     /// List of available slots on the floor
     holes: Vec<usize>,
+}
+
+impl<T: std::fmt::Debug> std::fmt::Debug for Hotel<T> {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "[")?;
+
+        let mut first = true;
+        for (_, i) in self.iter() {
+            if first {
+                first = false;
+            } else {
+                write!(f, ", ")?;
+            }
+
+            write!(f, "{i:?}")?;
+        }
+        write!(f, "]")
+    }
 }
 
 impl<T> IntoIterator for Hotel<T> {
@@ -150,5 +130,43 @@ impl<T> Iterator for HotelIter<T> {
         let value = self.floor[cursor].take().unwrap();
 
         Some((cursor, value))
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Hotel;
+
+    #[test]
+    fn inserting() {
+        let collection = 0..10000;
+        let mut hotel = Hotel::new();
+        collection.for_each(|v| {
+            let key = hotel.put(v);
+            assert_eq!(key, v as usize);
+        });
+    }
+
+    /// Guarantees that order of insertion is determinisitc even after retrieval
+    #[test]
+    fn order() {
+        let collection = 0..10000;
+        let mut hotel = Hotel::new();
+        collection.for_each(|v| {
+            let key = hotel.put(v);
+            assert_eq!(key, v as usize);
+        });
+
+        hotel.take(0);
+        hotel.take(15);
+        hotel.take(32);
+        hotel.take(3189);
+        hotel.take(7777);
+
+        assert_eq!(hotel.put(0), 7777);
+        assert_eq!(hotel.put(0), 3189);
+        assert_eq!(hotel.put(0), 32);
+        assert_eq!(hotel.put(0), 15);
+        assert_eq!(hotel.put(0), 0);
     }
 }

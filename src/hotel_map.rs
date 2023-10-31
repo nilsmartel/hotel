@@ -1,7 +1,6 @@
 use crate::{Hotel, HotelIter};
 use std::{collections::HashMap, hash::Hash};
 
-#[derive(Debug)]
 pub struct HotelMap<K, V>
 where
     K: Hash + Eq,
@@ -10,6 +9,27 @@ where
     hotel: Hotel<V>,
     // Store keys in a HashMap
     map: HashMap<K, usize>,
+}
+
+impl<K, V> std::fmt::Debug for HotelMap<K, V>
+where
+    K: Hash + Eq + std::fmt::Debug,
+    V: std::fmt::Debug,
+{
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "HotelMap [")?;
+        let mut first = true;
+        for (k, v) in &self.map {
+            if first {
+                first = false;
+            } else {
+                write!(f, ", ")?;
+            }
+
+            write!(f, "{k:?} => {v:?}")?;
+        }
+        write!(f, "]")
+    }
 }
 
 impl<K: Hash + Eq, V> Default for HotelMap<K, V> {
