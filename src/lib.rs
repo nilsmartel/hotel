@@ -74,6 +74,10 @@ impl<T> Hotel<T> {
         }
     }
 
+    pub fn set(&mut self, key: usize, item: T) {
+        self.floor[key] = Some(item);
+    }
+
     pub fn get(&self, key: usize) -> Option<&T> {
         if let Some(v) = self.floor.get(key).and_then(|v| v.as_ref()) {
             Some(v)

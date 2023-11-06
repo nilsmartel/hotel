@@ -76,6 +76,10 @@ where
         self.hotel.get(index)
     }
 
+    pub fn set_by_index(&mut self, index: usize, item: V) {
+        self.hotel.set(index, item);
+    }
+
     pub fn contains(&self, key: &K) -> bool {
         self.map.get(key).is_some()
     }
